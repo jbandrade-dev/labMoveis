@@ -1,9 +1,8 @@
+import produce from 'immer'
 import { ActionTypes } from './actions'
 
 export interface Module {
   id: string
-  idProject?: string
-  nameProject?: string
   nameModule: string
   moduleType: string
   hingsType: string
@@ -48,10 +47,9 @@ interface ModulesState {
 export function ModulesReducer(state: ModulesState, action: any) {
   switch (action.type) {
     case ActionTypes.ADD_NEW_MODULE:
-      return {
-        ...state,
-        modules: [...state.modules, action.payload.newModule],
-      }
+      return produce(state, (draft) => {
+        draft.modules.push(action.payload.newModule)
+      })
     case ActionTypes.DELETE_MODULE:
       return {
         ...state,

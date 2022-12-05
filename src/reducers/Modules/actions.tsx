@@ -3,7 +3,6 @@ import { Module } from './reducer'
 export enum ActionTypes {
   ADD_NEW_MODULE = 'ADD_NEW_MODULE',
   DELETE_MODULE = 'DELETE_MODULE',
-  GET_LOCAL_STORAGE = 'GET_LOCAL_STORAGE',
 }
 
 export function addNewModuleAction(newModule: Module) {

@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
+
 import {
   ReactNode,
   createContext,
@@ -58,24 +59,35 @@ const balanceDrawer = 26
 export function ModulesContextProvider({
   children,
 }: ModulesContextProviderProps) {
-  const { activeProject } = useContext(ProjectsContext)
   const [modulesState, dispatch] = useReducer(
     ModulesReducer,
     {
       modules: [],
     },
-    () => {
-      const storedStateAsJSON = localStorage.getItem('modules')
+    // () => {
+    //   const storedStateAsJSON = localStorage.getItem(
+    //     '@modules:modules-state-1.0.0',
+    //   )
 
-      if (storedStateAsJSON) {
-        return JSON.parse(storedStateAsJSON)
-      }
-    },
+    //   if (storedStateAsJSON) {
+    //     return JSON.parse(storedStateAsJSON)
+    //   }
+    // },
   )
 
   useEffect(() => {
-    localStorage.setItem('modules', JSON.stringify(modulesState))
+    localStorage.setItem(
+      '@modules:modules-state-1.0.0',
+      JSON.stringify(modulesState),
+    )
   }, [modulesState])
+
+  // useEffect(() => {
+  //   const teste = JSON.parse(
+  //     localStorage.getItem('@modules:modules-state-1.0.0')!,
+  //   )
+  //   if (teste) console.log('[TESTE]:', teste)
+  // }, [])
 
   const { modules } = modulesState
 
@@ -323,8 +335,6 @@ export function ModulesContextProvider({
 
     const newModule: Module = {
       id: uuidv4(),
-      idProject: activeProject?.id,
-      nameProject: activeProject?.nameProject,
       nameModule: data.nameModule,
       moduleType: data.moduleType,
       bottomType: data.bottomType,

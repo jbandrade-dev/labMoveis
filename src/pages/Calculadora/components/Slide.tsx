@@ -9,6 +9,7 @@ import { ModulesContext } from '../../../contexts/ModulesContext'
 
 export function Slide() {
   const { modules } = useContext(ModulesContext)
+
   return (
     <Swiper
       spaceBetween={16}
