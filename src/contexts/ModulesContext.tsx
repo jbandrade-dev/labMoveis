@@ -1,13 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import {
-  ReactNode,
-  createContext,
-  useContext,
-  useReducer,
-  useEffect,
-} from 'react'
-import { ProjectsContext } from './ProjectsContext'
+import { ReactNode, createContext, useReducer, useEffect } from 'react'
 import { Module, ModulesReducer } from '../reducers/Modules/reducer'
 import {
   addNewModuleAction,
@@ -81,13 +74,6 @@ export function ModulesContextProvider({
       JSON.stringify(modulesState),
     )
   }, [modulesState])
-
-  // useEffect(() => {
-  //   const teste = JSON.parse(
-  //     localStorage.getItem('@modules:modules-state-1.0.0')!,
-  //   )
-  //   if (teste) console.log('[TESTE]:', teste)
-  // }, [])
 
   const { modules } = modulesState
 
