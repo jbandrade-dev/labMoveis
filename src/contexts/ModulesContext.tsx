@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { v4 as uuidv4 } from 'uuid'
 
 import { ReactNode, createContext, useReducer, useEffect } from 'react'
@@ -53,21 +52,9 @@ const balanceDrawer = 26
 export function ModulesContextProvider({
   children,
 }: ModulesContextProviderProps) {
-  const [modulesState, dispatch] = useReducer(
-    ModulesReducer,
-    {
-      modules: [],
-    },
-    // () => {
-    //   const storedStateAsJSON = localStorage.getItem(
-    //     '@modules:modules-state-1.0.0',
-    //   )
-
-    //   if (storedStateAsJSON) {
-    //     return JSON.parse(storedStateAsJSON)
-    //   }
-    // },
-  )
+  const [modulesState, dispatch] = useReducer(ModulesReducer, {
+    modules: [],
+  })
 
   useEffect(() => {
     localStorage.setItem(
