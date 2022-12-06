@@ -1,16 +1,50 @@
 import { v4 as uuidv4 } from 'uuid'
-
-import { ReactNode, createContext, useReducer, useEffect } from 'react'
-import { Module, ModulesReducer } from '../reducers/Modules/reducer'
-import {
-  addNewModuleAction,
-  deleteModuleAction,
-} from '../reducers/Modules/actions'
+import { ReactNode, createContext, useEffect, useState } from 'react'
 import iconZero from '../assets/number-square-zero-fill.svg'
 import iconOne from '../assets/number-square-one-fill.svg'
 import iconTwo from '../assets/number-square-two-fill.svg'
 import iconFour from '../assets/number-square-four-fill.svg'
 import iconEight from '../assets/number-square-eight-fill.svg'
+import { balance, balanceDrawer } from '../components/types'
+
+export interface Module {
+  id: string
+  nameModule: string
+  moduleType: string
+  hingsType: string
+  slideType: string
+  bottomType: string
+  knobType: string
+  boxThickness: number
+  frontThickness: number
+  bottomThickness: number
+  isDrawer: boolean
+  hardwares: {
+    id: string | null
+    icon: string
+    nameHardware: string
+    measurements: string
+  }[]
+  parts: {
+    id: string
+    namePart: string
+    icon: string
+    measurements: {
+      width: number
+      height: number
+    }
+  }[]
+  drawers: {
+    id: string
+    namePart: string
+    icon: string
+
+    measurements: {
+      width: number
+      height: number
+    }
+  }[]
+}
 
 export interface CreateModuleData {
   nameModule: string
@@ -29,7 +63,7 @@ export interface CreateModuleData {
 }
 
 interface ModulesContextType {
-  modules: Module[]
+  modules: Module[] | null
   balance: number
   balanceDrawer: number
   iconOne: string
@@ -46,24 +80,26 @@ interface ModulesContextProviderProps {
 
 export const ModulesContext = createContext({} as ModulesContextType)
 
-const balance = 4
-const balanceDrawer = 26
-
 export function ModulesContextProvider({
   children,
 }: ModulesContextProviderProps) {
-  const [modulesState, dispatch] = useReducer(ModulesReducer, {
-    modules: [],
-  })
+  const [modules, setModules] = useState<Module[] | null>(null)
+
+  useEffect(() => {
+    const items = JSON.parse(
+      localStorage.getItem('@modules:modules-state-1.0.0')!,
+    )
+    if (items) {
+      setModules(items)
+    }
+  }, [])
 
   useEffect(() => {
     localStorage.setItem(
       '@modules:modules-state-1.0.0',
-      JSON.stringify(modulesState),
+      JSON.stringify(modules),
     )
-  }, [modulesState])
-
-  const { modules } = modulesState
+  }, [modules])
 
   function createNewModule(data: CreateModuleData) {
     const moduleBase = {
@@ -323,11 +359,16 @@ export function ModulesContextProvider({
       parts: [moduleBase, moduleSide, moduleFronts, shelf, slat, moduleBottom],
       drawers: [drawerBase, drawerSide, drawerBottom],
     }
-    dispatch(addNewModuleAction(newModule))
+    if (modules !== null) {
+      setModules([...modules, newModule])
+    }
   }
 
-  function deleteModule(moduleToDeleteId: string) {
-    dispatch(deleteModuleAction(moduleToDeleteId))
+  function deleteModule(moduleToDelete: string) {
+    const deleteModule = modules!.filter(
+      (module) => module.id !== moduleToDelete,
+    )
+    setModules(deleteModule)
   }
 
   return (

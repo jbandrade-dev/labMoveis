@@ -34,7 +34,7 @@ export function Slide() {
       modules={[FreeMode, Pagination]}
       className="mySwiper"
     >
-      {modules.map((content) => {
+      {modules?.map((content) => {
         return (
           <SwiperSlide className="mb-9" key={content.id}>
             <TabCard content={content} />

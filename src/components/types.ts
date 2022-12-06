@@ -1,6 +1,11 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 
+// ModulesContext
+
+export const balance = 4
+export const balanceDrawer = 26
+
 // Design System
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
